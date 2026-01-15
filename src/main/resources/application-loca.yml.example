@@ -1,0 +1,8 @@
+jwt:
+  secret: "PUT_YOUR_SECRET_HERE"
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/propertydb
+    username: postgres
+    password: password
