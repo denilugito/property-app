@@ -8,4 +8,5 @@ jwt:
 
 logging:
   level:
-    org.springframework.core.env: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
