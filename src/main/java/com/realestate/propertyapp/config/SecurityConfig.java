@@ -1,7 +1,9 @@
 package com.realestate.propertyapp.config;
 
+import com.realestate.propertyapp.security.CustomAccessDeniedHandler;
 import com.realestate.propertyapp.security.JwtAuthenticationFilter;
 import com.realestate.propertyapp.security.JwtFilter;
+import com.realestate.propertyapp.security.RestAuthenticationEntryPoint;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +28,13 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, RestAuthenticationEntryPoint restAuthenticationEntryPoint, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     @Bean
@@ -51,9 +57,11 @@ public class SecurityConfig {
 
                // This is default behaviour without JWT, including if hit the /api/properties
                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
+                        .authenticationEntryPoint(restAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                        /*.authenticationEntryPoint((request, response, authException) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        })
+                        })*/
                 )
 
                 .addFilterBefore(jwtAuthenticationFilter,

@@ -6,6 +6,7 @@ import com.realestate.propertyapp.security.entity.RefreshToken;
 import com.realestate.propertyapp.security.service.RefreshTokenService;
 import com.realestate.propertyapp.user.entity.User;
 import com.realestate.propertyapp.user.repository.UserRepository;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,10 @@ public class AuthService {
 
     public LoginResponse login(String username, String password) {
         User user = userRepository.findByUsername(username).
-                orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
         if (!encoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new BadCredentialsException("Invalid credentials");
         }
 
         // Generate access token(JWT)
