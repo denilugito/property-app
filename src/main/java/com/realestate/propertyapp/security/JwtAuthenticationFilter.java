@@ -24,15 +24,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        String method = request.getMethod();
+
+        // Public auth endpoints
+        if (path.startsWith("/api/auth")) {
+            return true;
+        }
+
+        // Public proeprty reads (GET only)
+        if (path.startsWith("/api/properties") && "GET".equalsIgnoreCase(method)) {
+            return true;
+        }
+
+        // Allow CORS preflight
+        if ("OPTIONS".equalsIgnoreCase(method)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getServletPath();
 
-        // Skip auth endpoints
-        if (path.startsWith("/api/auth")) {
+        // Skip auth endpoints -- will be using overriden method shouldNotFilter instead
+        /*if (path.startsWith("/api/auth")) {
             filterChain.doFilter(request, response);
             return;
-        }
+        }*/
 
         String header = request.getHeader("Authorization");
 

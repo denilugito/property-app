@@ -47,10 +47,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/error/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/properties/**").permitAll()
                         // Bellow 2 security conditionals can be overwritten in PropertyController using @PreAuthorize
                         .requestMatchers(HttpMethod.POST, "/api/properties/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/properties/**").hasAnyRole("USER","ADMIN")
                         //.requestMatchers("/api/properties/**").permitAll()
                         .anyRequest().authenticated()
                 )

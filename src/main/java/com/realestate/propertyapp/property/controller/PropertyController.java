@@ -26,13 +26,11 @@ public class PropertyController {
         return toResponse(service.create(request));
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    @GetMapping()
+    @GetMapping({"", "/"})
     public Page<PropertyResponse> list(@PageableDefault(size = 10) Pageable pageable) {
         return service.list(pageable).map(this::toResponse);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/{id}")
     public PropertyResponse get(@PathVariable Long id) {
         return toResponse(service.get(id));
@@ -42,9 +40,16 @@ public class PropertyController {
         PropertyResponse r = new PropertyResponse();
         r.id = p.getId();
         r.title = p.getTitle();
+        r.description = p.getDescription();
         r.price = p.getPrice();
         r.type = p.getType();
+        r.bedrooms = p.getBedrooms();
+        r.bathrooms = p.getBathrooms();
+        r.area = p.getArea();
         r.hasPanorama = p.getHasPanorama();
+        r.createdAt = p.getCreatedAt();
+        r.agentId = p.getAgent().getId();
+        r.agentName = p.getAgent().getFullname();
         return r;
     }
 }

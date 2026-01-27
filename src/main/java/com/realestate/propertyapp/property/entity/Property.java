@@ -1,5 +1,6 @@
 package com.realestate.propertyapp.property.entity;
 
+import com.realestate.propertyapp.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -34,6 +35,11 @@ public class Property {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    // AGENT JOIN
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agent_id", nullable = false)
+    private User agent;
 
     // getter, setter
     public Long getPrice() {
@@ -115,4 +121,8 @@ public class Property {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public User getAgent() {return agent;}
+
+    public void setAgent(User agent) {this.agent = agent;}
 }

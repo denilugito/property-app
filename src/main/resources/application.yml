@@ -10,3 +10,9 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always

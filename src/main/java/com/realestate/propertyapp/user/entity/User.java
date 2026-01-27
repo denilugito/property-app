@@ -1,6 +1,10 @@
 package com.realestate.propertyapp.user.entity;
 
+import com.realestate.propertyapp.property.entity.Property;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -17,6 +21,11 @@ public class User {
     private String password;
 
     private String role; // USER / ADMIN
+
+    private String fullname;
+
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Property> properties = new ArrayList<>();
 
     // getter & setters
     public Long getId() {
@@ -50,4 +59,12 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getFullname() {return fullname;}
+
+    public void setFullname(String fullname) {this.fullname = fullname;}
+
+    public List<Property> getProperties() {return properties;}
+
+    public void setProperties(List<Property> properties) {this.properties = properties;}
 }
