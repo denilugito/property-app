@@ -13,6 +13,7 @@ public class PropertyResponse {
     public Integer area;
     public Boolean hasPanorama;
     public LocalDateTime createdAt;
+    public String imageUrl;
 
     // Agent Information (flattened)
     public Long agentId;

@@ -41,6 +41,9 @@ public class Property {
     @JoinColumn(name = "agent_id", nullable = false)
     private User agent;
 
+    @Column(length = 500)
+    private String imageUrl;
+
     // getter, setter
     public Long getPrice() {
         return price;
@@ -125,4 +128,12 @@ public class Property {
     public User getAgent() {return agent;}
 
     public void setAgent(User agent) {this.agent = agent;}
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
