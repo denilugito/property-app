@@ -16,18 +16,19 @@ public class PropertySpecification {
 
     public static Specification<Property> searchSpec(PropertySearchRequest req) {
         return (root, query, cb) -> {
-            if (req.getKeyword() == null || req.getKeyword().isBlank()) return null;
 
             List<Predicate> predicates = new ArrayList<>();
             Join<Property, Address> address = root.join("address", JoinType.LEFT);
 
-            String like = "%" + req.getKeyword().toLowerCase() + "%";
-            predicates.add(cb.or(
-                    cb.like(cb.lower(root.get("title")), like),
-                    cb.like(cb.lower(root.get("description")), like),
-                    cb.like(cb.lower(address.get("city")), like),
-                    cb.like(cb.lower(address.get("subDistrict")), like)
-            ));
+            if (req.getKeyword() != null && !req.getKeyword().isBlank()) {
+                String like = "%" + req.getKeyword().toLowerCase() + "%";
+                predicates.add(cb.or(
+                        cb.like(cb.lower(root.get("title")), like),
+                        cb.like(cb.lower(root.get("description")), like),
+                        cb.like(cb.lower(address.get("city")), like),
+                        cb.like(cb.lower(address.get("subDistrict")), like)
+                ));
+            }
 
             // Type
             if (req.getType() != null) {
