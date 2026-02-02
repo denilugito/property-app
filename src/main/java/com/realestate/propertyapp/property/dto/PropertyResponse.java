@@ -1,5 +1,7 @@
 package com.realestate.propertyapp.property.dto;
 
+import com.realestate.propertyapp.address.entity.Address;
+
 import java.time.LocalDateTime;
 
 public class PropertyResponse {
@@ -18,4 +20,6 @@ public class PropertyResponse {
     // Agent Information (flattened)
     public Long agentId;
     public String agentName;
+
+    public AddressResponse address;
 }

@@ -51,10 +51,15 @@ public class SecurityConfig {
                         .requestMatchers("/error/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        // PUBLIC PROPERTY READ
                         .requestMatchers(HttpMethod.GET, "/api/properties/**").permitAll()
+
+                        // PUBLIC SEARCH POST
+                        .requestMatchers(HttpMethod.POST, "/api/properties/search").permitAll()
+
                         // Bellow 2 security conditionals can be overwritten in PropertyController using @PreAuthorize
                         .requestMatchers(HttpMethod.POST, "/api/properties/**").hasRole("ADMIN")
-                        //.requestMatchers("/api/properties/**").permitAll()
                         .anyRequest().authenticated()
                 )
 

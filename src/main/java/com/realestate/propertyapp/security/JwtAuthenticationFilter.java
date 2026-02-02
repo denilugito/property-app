@@ -38,6 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return true;
         }
 
+        // Public POST Search
+        if ("/api/properties/search".equals(path)
+            && "POST".equalsIgnoreCase(method)) {
+            return true;
+        }
+
         // Allow CORS preflight
         if ("OPTIONS".equalsIgnoreCase(method)) {
             return true;

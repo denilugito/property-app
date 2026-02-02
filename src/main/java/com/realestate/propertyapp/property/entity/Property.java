@@ -1,5 +1,6 @@
 package com.realestate.propertyapp.property.entity;
 
+import com.realestate.propertyapp.address.entity.Address;
 import com.realestate.propertyapp.user.entity.User;
 import jakarta.persistence.*;
 
@@ -43,6 +44,10 @@ public class Property {
 
     @Column(length = 500)
     private String imageUrl;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     // getter, setter
     public Long getPrice() {
@@ -135,5 +140,13 @@ public class Property {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
