@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
@@ -48,6 +49,7 @@ public class PropertyService {
         return repository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true) // -- For Lazy Load
     public Property get(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Property not found"));
     }
@@ -62,6 +64,7 @@ public class PropertyService {
         return imageUrl;
     }
 
+    @Transactional(readOnly = true)
     public Page<Property> search(
             PropertySearchRequest propReq, Pageable pageable
     ) {

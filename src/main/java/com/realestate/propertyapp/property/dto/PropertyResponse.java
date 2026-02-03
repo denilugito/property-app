@@ -1,8 +1,10 @@
 package com.realestate.propertyapp.property.dto;
 
-import com.realestate.propertyapp.address.entity.Address;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PropertyResponse {
     public Long id;
@@ -22,4 +24,9 @@ public class PropertyResponse {
     public String agentName;
 
     public AddressResponse address;
+
+    // -- Tidak Dibutuhkan, Untuk Listing PropertyImages, dari table PropertyImages
+    // -- turunkan ke imageUrl di PorpertyResponse
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public List<PropertyImageResponse> propertyImages;
 }

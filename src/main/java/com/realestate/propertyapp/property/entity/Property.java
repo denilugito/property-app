@@ -1,11 +1,14 @@
 package com.realestate.propertyapp.property.entity;
 
 import com.realestate.propertyapp.address.entity.Address;
+import com.realestate.propertyapp.image.entity.PropertyImage;
 import com.realestate.propertyapp.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "properties")
@@ -41,6 +44,13 @@ public class Property {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
     private User agent;
+
+
+    // NEW: Relationship with PropertyImage
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderBy("displayOrder ASC")
+    private List<PropertyImage> images =  new ArrayList<>();
+
 
     @Column(length = 500)
     private String imageUrl;
@@ -148,5 +158,13 @@ public class Property {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public List<PropertyImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<PropertyImage> images) {
+        this.images = images;
     }
 }
