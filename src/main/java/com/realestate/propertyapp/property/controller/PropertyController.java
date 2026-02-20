@@ -2,6 +2,7 @@ package com.realestate.propertyapp.property.controller;
 
 import com.realestate.propertyapp.address.entity.Address;
 import com.realestate.propertyapp.aws.service.S3StorageService;
+import com.realestate.propertyapp.image.dto.PropertyImageDTO;
 import com.realestate.propertyapp.image.entity.PropertyImage;
 import com.realestate.propertyapp.property.dto.*;
 import com.realestate.propertyapp.property.entity.Property;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/properties")
@@ -110,6 +112,15 @@ public class PropertyController {
                         .toList();
     }
 
+    private PropertyImageDTO mapPropertyToDTO(PropertyImage propertyImage) {
+        if (propertyImage == null) return null;
+
+        PropertyImageDTO propRes = new PropertyImageDTO();
+        propRes.propertyId = propertyImage.getProperty().getId();
+        propRes.imageUrl = propertyImage.getImageUrl();
+        return propRes;
+    }
+
     @PostMapping("{id}/image")
     public ResponseEntity<?> uploadImage(
             @PathVariable Long id,
@@ -117,6 +128,18 @@ public class PropertyController {
     ) {
         String imageUrl = service.uploadPropertyImage(id, file);
         return ResponseEntity.ok(Map.of("imageUrl", imageUrl));
+    }
+
+    // -- Upload non primary images (add other images0
+    @PostMapping("{id}/addImages")
+    public List<PropertyImageDTO> addImages(
+            @PathVariable Long id,
+            @RequestParam("files") List<MultipartFile> files) {
+
+        return files.stream()
+                .map(eachFile -> service.addImagesProperty(id, eachFile))
+                .map(this::mapPropertyToDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/search")

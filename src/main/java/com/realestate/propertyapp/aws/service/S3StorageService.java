@@ -22,7 +22,8 @@ public class S3StorageService {
 
     public String uploadPropertyImage(MultipartFile file, Long propertyId) {
         try {
-            String key = "properties%d%s".formatted(propertyId, UUID.randomUUID() + "-" + file.getOriginalFilename());
+//            String key = "properties%d%s".formatted(propertyId, UUID.randomUUID() + "-" + file.getOriginalFilename());
+            String key = "properties/%d/%s-%s".formatted(propertyId, UUID.randomUUID(), file.getOriginalFilename());
 
             PutObjectRequest request = PutObjectRequest.builder()
                     .bucket(bucket)
